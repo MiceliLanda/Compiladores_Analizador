@@ -37,7 +37,7 @@ def createTable(array):
 
 def run():
     root = Tk()
-    root.title("Entrenamiento")
+    root.title("MIBA SQL Analizador")
     root.geometry('400x150')
 
     entrada = Label(root, text="Ingrese la sentencia SQL: ")
