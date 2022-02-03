@@ -1,4 +1,5 @@
 import re
+from tkinter import *
 
 def cleanText(arr):
     for pos, e in enumerate(arr):
@@ -12,9 +13,6 @@ def cleanText(arr):
             # arr.insert(pos, e)
             # print(arr)
             # MEJOR ELIMINAR CARACTER DEL ELEMENTO Y AGREGARLO COMO NUEVO ELEMENTO 
-            
-     
-        
 
 def verifyLex(array):
     
@@ -36,5 +34,24 @@ def useDB(array):
 
 def createTable(array):
    pass
-        
-verifyLex(cleanText(input().split(' ')))
+
+def run():
+    root = Tk()
+    root.title("Entrenamiento")
+    root.geometry('400x150')
+
+    entrada = Label(root, text="Ingrese la sentencia SQL: ")
+    entrada.grid(column=0,row=0)
+    txt = Entry(root ,width=20)
+    txt.grid(column=1,row=0)
+    txt.focus()
+
+    def getValues():
+        sentencia = txt.get()
+        verifyLex(cleanText(sentencia.split(' ')))
+
+    btn = Button(root,text='Calcular',bg='red',fg='white',command=getValues)
+    btn.grid(column=1,row=5)
+    root.mainloop() 
+
+run()
