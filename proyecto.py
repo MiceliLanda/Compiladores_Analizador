@@ -20,7 +20,7 @@ def outputMessageSuccess(num, msg):
     if num == 0:
         message.config(text='[OK] : DB Created Successfully')
     elif num == 1:
-       message.config(text=f'[OK] : DB Used {msg}')
+        message.config(text=f'[OK] : DB Used {msg}')
     elif num == 2:
         message.config(text=f'[OK] : Struct {msg} Deleted')
     elif num == 3:
@@ -58,30 +58,16 @@ def checkSqlAdvanced(sql, id):
 
 def verifyParentesis(sql):
     if '(' in sql[0] and  ')' in sql[-1]:
-
         nSql = "".join(sql)
-        print(nSql)
-        prueba = []
         count = 0
         prueba2 = []
         
         for pos, char in enumerate(nSql):
             if(not char =='(' and not char ==')'):
-                
                 prueba2.append(char)
-                
-            if(str(char).isalnum()):
-                prueba.append(char)
-            else:
-                if(char == '(' or char == ')'): 
-                    count += 1  
-
-        b = "".join(prueba) 
+            else: 
+                count += 1  
         c = "".join(prueba2)       
-        print(b)
-        print('Esto es c',c)
-        #print(nSql)
-        #nSql.pop(0), nSql.pop(-1)
         if count > 2:
             message.config(text='[ERROR] : Cannot have multiple parentheses')
         else: 
@@ -89,29 +75,36 @@ def verifyParentesis(sql):
                 message.config(text ='[ERROR] : INVALID CHARACTER')
             else:  
                 verifyContent(c) 
-            
-            #CHECAR LO QUE TIENE DENTRO DE LOS PARENTESIS -> NUEVA FUNCION
     else: 
         outputMessageError()
 
 
 def verifyContent(data):
-
-    tipos = ['varchar','bool','int','double'] # i
+    tipos = ['double','bool','int','varchar'] 
     nomAndTipo = data.split(',') #CONTADOR DE COMAS
     atributos = []
+    new = []
+    case = True
     for elemento in nomAndTipo:
         if elemento.isalnum():
+            print(elemento.isalnum(), elemento)
             atributos.append(elemento.strip())
-
-    if atributos:
+        else: 
+            case = False
+            break
+ 
+    if case:    
         for t in tipos:
             for j in atributos:
                 if j.find(t) > 0:
-                    message.config(text ='[OK] : Struct Created Successfully')
-                else: 
-                    outputMessageError()
-                    break
+                    a = j[j.find(t)::]
+                    new.append(a)      
+
+        if len(atributos) != len(new):
+            outputMessageError()
+        else: message.config(text='[OK] : Struct Created Successfully')
+    else: outputMessageError()
+                    
 
 
 def run():

@@ -68,28 +68,5 @@
 #     funcion(b.__getitem__(0),b) # LLAMOS LA FUNCIÓN CORRESPONDIENTE
 # else: print(f'[ERROR] : Syntax Error :  {b.__getitem__(0)}')
 # # else: print(f'[ERROR] : Syntax Error :  {b.__getitem__(0)}')
-import re
 
-tokens = {
-    'palabras reservadas': 0,
-    'parentesisApertura' : 0,
-    'parentesisCierre' : 0,
-    'identificadores' : 0,
-    'signo' : 0, 
-    'separador' : 0 ,
-    'tipoDato' : 0 }
-
-tipos = ['varchar','int','double','bool']
-def verifyParentesis(sql):
-
-    sql.pop(0),sql.pop(0)
-    print(f'List sql: {sql}')
-    if '(' in sql[0] and ')' in sql[-1]:
-        a = list(sql[0])
-        a.pop(0)
-        print('si cayó ',a)
-    else:
-        print('no es ',sql[0])
-
-verifyParentesis(input('sentencia sql: ').lower().strip().split(' '))
 
