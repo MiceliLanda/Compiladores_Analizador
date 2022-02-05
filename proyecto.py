@@ -52,23 +52,67 @@ def checkSql(sql, id):
 
 def checkSqlAdvanced(sql, id):
     if sql[0].isalnum():
-        verifyParentesis(sql[1])
+        sql.pop(0)
+        verifyParentesis(sql)
     else: outputMessageError()
 
 def verifyParentesis(sql):
-    if sql[0] == '(' and sql[-1] == ')':
-        nSql = list(sql)
-        nSql.pop(0), nSql.pop(-1)
-        if '(' in nSql or ')' in nSql:
+    if '(' in sql[0] and  ')' in sql[-1]:
+
+        nSql = "".join(sql)
+        print(nSql)
+        prueba = []
+        count = 0
+        prueba2 = []
+        
+        for pos, char in enumerate(nSql):
+            if(not char =='(' and not char ==')'):
+                
+                prueba2.append(char)
+                
+            if(str(char).isalnum()):
+                prueba.append(char)
+            else:
+                if(char == '(' or char == ')'): 
+                    count += 1  
+
+        b = "".join(prueba) 
+        c = "".join(prueba2)       
+        print(b)
+        print('Esto es c',c)
+        #print(nSql)
+        #nSql.pop(0), nSql.pop(-1)
+        if count > 2:
             message.config(text='[ERROR] : Cannot have multiple parentheses')
         else: 
-            word = ''.join(nSql)
-            message.config(text=f'[OK] : Avanzar con la función : data -> {word}') 
+            if(not c[-1].isalpha()):
+                message.config(text ='[ERROR] : INVALID CHARACTER')
+            else:  
+                verifyContent(c) 
+            
             #CHECAR LO QUE TIENE DENTRO DE LOS PARENTESIS -> NUEVA FUNCION
     else: 
-        print('err',sql) #VERIFICAR CONDICICION PORQUE SOLO ADMITE UNA PALABRA
+        outputMessageError()
 
-    
+
+def verifyContent(data):
+
+    tipos = ['varchar','bool','int','double'] # i
+    nomAndTipo = data.split(',') #CONTADOR DE COMAS
+    atributos = []
+    for elemento in nomAndTipo:
+        if elemento.isalnum():
+            atributos.append(elemento.strip())
+
+    if atributos:
+        for t in tipos:
+            for j in atributos:
+                if j.find(t) > 0:
+                    message.config(text ='[OK] : Struct Created Successfully')
+                else: 
+                    outputMessageError()
+                    break
+
 
 def run():
     root = Tk()
