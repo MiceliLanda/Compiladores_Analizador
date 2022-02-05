@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 
 reservadas = [ 'new-db', 'new-struct' , 'take' , 'fix-struct', 'supr-db', 'supr-struct']
+
 tokens = {
     'palabras reservadas': 0,
     'parentesisApertura' : 0,
@@ -33,9 +34,9 @@ def funcion(metodo, resto):
     elif metodo == 'take':
         checkSql(resto,1)
     elif metodo == 'new-struct':
-        pass
+        checkSqlAdvanced(resto,5)
     elif metodo == 'fix-struct':
-        pass
+        checkSqlAdvanced(resto,6)
     elif metodo == 'supr-struct':
         checkSql(resto,2)
     elif metodo == 'supr-db':
@@ -49,6 +50,26 @@ def checkSql(sql, id):
         else: outputMessageError()
     else: outputMessageError()
 
+def checkSqlAdvanced(sql, id):
+    if sql[0].isalnum():
+        verifyParentesis(sql[1])
+    else: outputMessageError()
+
+def verifyParentesis(sql):
+    if sql[0] == '(' and sql[-1] == ')':
+        nSql = list(sql)
+        nSql.pop(0), nSql.pop(-1)
+        if '(' in nSql or ')' in nSql:
+            message.config(text='[ERROR] : Cannot have multiple parentheses')
+        else: 
+            word = ''.join(nSql)
+            message.config(text=f'[OK] : Avanzar con la función : data -> {word}') 
+            #CHECAR LO QUE TIENE DENTRO DE LOS PARENTESIS -> NUEVA FUNCION
+    else: 
+        print('err',sql) #VERIFICAR CONDICICION PORQUE SOLO ADMITE UNA PALABRA
+
+    
+
 def run():
     root = Tk()
     root.title("MIBA SQL Analizador")
@@ -56,17 +77,17 @@ def run():
 
     lbl = Label(root,text="Ingresa la sentencia de MIBA",font=('Roboto 16 ') )
     lbl.pack()
-    text=Entry(root, font = ('Robot 15'),width=50)
+    text=Entry(root, font = ('Roboto 15'),width=50)
     text.insert(END, "")
     text.pack(pady=30)
 
     def getValues():
         sentencia = text.get()
-        b = sentencia.lower().strip().split(' ') 
-        if b.__getitem__(0) in reservadas: 
-            funcion(b.__getitem__(0),b) 
+        reservedWord = sentencia.lower().strip().split(' ')
+        if reservedWord.__getitem__(0) in reservadas: 
+            funcion(reservedWord.__getitem__(0),reservedWord) 
         else: 
-            message.config(text=f'[ERROR] : Syntax Error :  {b.__getitem__(0)}')
+            message.config(text=f'[ERROR] : Syntax Error :  {reservedWord.__getitem__(0)}')
 
     btn = Button(root,text='Analizar',bg='green',fg='white' ,padx=70,pady=8,command=getValues)
     btn.pack(pady=30)
