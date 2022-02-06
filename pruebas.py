@@ -70,3 +70,27 @@
 # # else: print(f'[ERROR] : Syntax Error :  {b.__getitem__(0)}')
 
 
+# s = 'edad2','edad=5','edad=5'
+# a = len(s)
+# cont = 0
+# for elemento in s:
+#     if cont != a:
+#         if '=' in elemento:
+#             cont+=1
+#             print('hacer separacion por signo igual') #proceso de evaluar ->funcion
+#         else: 
+#             print(f'Check your variable: {elemento}')
+#             break
+
+value = 'b=2,c=0,b=,2'
+
+# v = value.split('=')
+# s = value.split(',')
+co = value.count(',')
+ig = value.count('=')
+
+if value.count('=')-1 == value.count(','):
+    print('OK')
+else:
+    print('error syntax')
+# print('size:',len(v),v,' : ', s,'size:',len(s))

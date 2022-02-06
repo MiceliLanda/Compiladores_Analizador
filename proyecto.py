@@ -3,7 +3,8 @@ from tkinter import ttk
 from tkinter import *
 
 reservadas = [ 'new-db', 'new-struct' , 'take' , 'fix-struct', 'supr-db', 'supr-struct']
-
+atributos = []
+new = []
 tokens = {
     'palabras reservadas': 0,
     'parentesisApertura' : 0,
@@ -54,8 +55,8 @@ def checkSqlAdvanced(sql, id):
     
     if sql[0].isalnum():
         if(id == 5):
-           sql.pop(0) #pop que quita el name
-           verifyParentesis(sql,id)
+            sql.pop(0) #pop que quita el name
+            verifyParentesis(sql,id)
         elif(id == 6):
             if(sql[1]=='upd'):
                 sql.pop(0),sql.pop(0)
@@ -63,7 +64,6 @@ def checkSqlAdvanced(sql, id):
             else: 
                 outputMessageError()
                 print('el pedo fue el upd')    
-         
         
     else: outputMessageError()
 
@@ -82,22 +82,26 @@ def verifyParentesis(sql,id):
         if count > 2:
             message.config(text='[ERROR] : Cannot have multiple parentheses')
         else: 
-            if(not c[-1].isalpha()):
-                message.config(text ='[ERROR] : INVALID CHARACTER')
+            if(not c[-1].isalnum()):
+                message.config(text ='[ERROR] : Invalid Character')
             else:
                 if(id==5):
                     verifyContent(c)
                 elif(id==6):
-                    verifyContentFix(c)              
+                    if c.count('=')-1 == c.count(','):
+                        co = c.split(',') 
+                        verifyContentFix(co)   
+                    else:outputMessageError()     
+                else:
+                    outputMessageError()      
     else: 
         outputMessageError()
 
 
 def verifyContent(data):
-    tipos = ['double','bool','int','varchar'] 
+    tipos = ['double','bool','int','varchar']
+    unknow = ''
     nomAndTipo = data.split(',') #CONTADOR DE COMAS
-    atributos = []
-    new = []
     case = True
     for elemento in nomAndTipo:
         if elemento.isalnum():
@@ -112,37 +116,41 @@ def verifyContent(data):
             for j in atributos:
                 if j.find(t) > 0:
                     a = j[j.find(t)::]
-                    new.append(a)      
+                    if not len(a) != len(t):
+                        new.append(a)
+                        print(f'tipo agregado: {a}')
+                    else:
+                        unknow = a
 
         if len(atributos) != len(new):
-            outputMessageError()
-        else: message.config(text='[OK] : Struct Created Successfully')
-    else: outputMessageError()
-
-def verifyContentFix(data):
-    print(data)
-    new = []
-    if(data[-1]== '='):
-        outputMessageError()
-        print('no dejar suelto un igual')
+            message.config(text =f'[ERROR] : Unknow Data Type {unknow}')
+            new.clear()
+            atributos.clear()
+        else:
+            message.config(text='[OK] : Struct Created Successfully')
+            new.clear()
+            atributos.clear()
     else:
-        if(data[0].isalnum()):
-            fixSql = data.split('=')
-            case = True
-            for elemento in fixSql:
-                if elemento.isalnum():
-                    print(elemento.isalnum(), elemento)
-                    new.append(elemento.strip())
-                else: 
-                    case = False
-                    break
-            
-            if case:
-                message.config(text='[OK] : Struct update Successfully')
-            else: outputMessageError()    
-        else: outputMessageError()
-    
-                    
+        print('CASE ES FALSE')
+        outputMessageError()
+
+def verifyContentFix(data): #PENDIENTE CHECAR LO DE ON Y DE MAS
+    sizeArr = len(data)
+    case = True
+    count = 0
+    for elemento in data:
+        if count != sizeArr:
+            if elemento.count('=') < 2:
+                count+=1
+                new.append(elemento)
+            else:
+                case = False
+                message.config(text=f'[ERROR] : Check your variable {elemento}')
+                new.clear()
+                break           
+    if case:
+        print(f'{new}ENTRO True')
+        new.clear()
 
 
 def run():
