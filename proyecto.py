@@ -51,12 +51,23 @@ def checkSql(sql, id):
     else: outputMessageError()
 
 def checkSqlAdvanced(sql, id):
+    
     if sql[0].isalnum():
-        sql.pop(0)
-        verifyParentesis(sql)
+        if(id == 5):
+           sql.pop(0) #pop que quita el name
+           verifyParentesis(sql,id)
+        elif(id == 6):
+            if(sql[1]=='upd'):
+                sql.pop(0),sql.pop(0)
+                verifyParentesis(sql,id)
+            else: 
+                outputMessageError()
+                print('el pedo fue el upd')    
+         
+        
     else: outputMessageError()
 
-def verifyParentesis(sql):
+def verifyParentesis(sql,id):
     if '(' in sql[0] and  ')' in sql[-1]:
         nSql = "".join(sql)
         count = 0
@@ -73,8 +84,11 @@ def verifyParentesis(sql):
         else: 
             if(not c[-1].isalpha()):
                 message.config(text ='[ERROR] : INVALID CHARACTER')
-            else:  
-                verifyContent(c) 
+            else:
+                if(id==5):
+                    verifyContent(c)
+                elif(id==6):
+                    verifyContentFix(c)              
     else: 
         outputMessageError()
 
@@ -92,7 +106,7 @@ def verifyContent(data):
         else: 
             case = False
             break
- 
+    #CHECAR LETA SIGUIENTE DESPUÉS DEL TIPO
     if case:    
         for t in tipos:
             for j in atributos:
@@ -104,6 +118,30 @@ def verifyContent(data):
             outputMessageError()
         else: message.config(text='[OK] : Struct Created Successfully')
     else: outputMessageError()
+
+def verifyContentFix(data):
+    print(data)
+    new = []
+    if(data[-1]== '='):
+        outputMessageError()
+        print('no dejar suelto un igual')
+    else:
+        if(data[0].isalnum()):
+            fixSql = data.split('=')
+            case = True
+            for elemento in fixSql:
+                if elemento.isalnum():
+                    print(elemento.isalnum(), elemento)
+                    new.append(elemento.strip())
+                else: 
+                    case = False
+                    break
+            
+            if case:
+                message.config(text='[OK] : Struct update Successfully')
+            else: outputMessageError()    
+        else: outputMessageError()
+    
                     
 
 
