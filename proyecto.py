@@ -63,8 +63,6 @@ def checkSqlAdvanced(sql, id):
                 verifyParentesis(sql,id)
             else: 
                 message.config(text='[ERROR] : Expected reserved word UPD')
-                  
-        
     else: outputMessageError()
 
 def verifyParentesis(sql,id):
@@ -96,21 +94,20 @@ def verifyParentesis(sql,id):
                                 prueba2.append(elemento.replace(' ', ''))
                             else: 
                                 prueba2.extend(elemento.replace(' ', '').split('>'))
-                        print(f' {prueba2}')
+                        # print(f' {prueba2}')
                         if '=' in prueba2[-1]:
                             verifyContentFix(prueba2)
                             prueba2.clear()
                         else: 
-                            print('eror')
                             prueba2.clear()
                             outputMessageError()
                         
                     else:
-                        print('Proceso normal')
                         if c.count('=')-1 == c.count(','):
                             co = c.split(',') 
                             verifyContentFix(co)   
-                        else:outputMessageError()                       
+                        else:
+                            outputMessageError()                       
                 else: 
                     outputMessageError()
 
@@ -151,7 +148,7 @@ def verifyContent(data):
         print('CASE ES FALSE')
         outputMessageError()
 
-def verifyContentFix(data): #PENDIENTE CHECAR LO DE ON Y DE MAS
+def verifyContentFix(data):
     sizeArr = len(data)
     case = True
     count = 0
@@ -162,14 +159,21 @@ def verifyContentFix(data): #PENDIENTE CHECAR LO DE ON Y DE MAS
                 new.append(elemento)
             else:
                 case = False
-                message.config(text=f'[ERROR] : Check your variable {elemento}')
+                message.config(text=f'[ERROR] : Check Your Identifier')
                 new.clear()
                 break           
     if case:
-        print(f'{new}ENTRO True')
-        message.config(text=f'[OK] : Fix-struct success')
+        for elemento in new:
+            var = elemento.replace('=','')
+            if var.isalnum():
+                message.config(text=f'[OK] : Struct Updated Successfully')
+            else: 
+                message.config(text=f'[ERROR] : Check Your Identifier')
+                break
         new.clear()
-    else: outputMessageError()
+    else: 
+        new.clear()
+        outputMessageError()
 
 
 def run():
