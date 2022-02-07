@@ -82,15 +82,18 @@
 #             print(f'Check your variable: {elemento}')
 #             break
 
-value = 'b=2,c=0,b=,2'
+# value = 'b=2,c=0,b=,2'
 
-# v = value.split('=')
-# s = value.split(',')
-co = value.count(',')
-ig = value.count('=')
+# co = value.count(',')
+# ig = value.count('=')
 
-if value.count('=')-1 == value.count(','):
-    print('OK')
-else:
-    print('error syntax')
-# print('size:',len(v),v,' : ', s,'size:',len(s))
+# if value.count('=')-1 == value.count(','):
+#     print('OK')
+# else:
+#     print('error syntax')
+metodo = 'new-db'
+token = {'new-db' : 1}
+value = token.get(metodo)
+print(value)
+token.update({'new-db' : value+1})
+print(token)

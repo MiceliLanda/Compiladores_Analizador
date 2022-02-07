@@ -6,7 +6,7 @@ reservadas = [ 'new-db', 'new-struct' , 'take' , 'fix-struct', 'supr-db', 'supr-
 atributos = []
 new = []
 tokens = {
-    'palabras reservadas': 0,
+    'palabras reservadas': 0, # ASIGNADO
     'parentesisApertura' : 0,
     'parentesisCierre' : 0,
     'identificadores' : 0,
@@ -29,6 +29,7 @@ def outputMessageSuccess(num, msg):
 
 def funcion(metodo, resto):
     # AQUI INICIAREMOS EL CONTEO DE RESERVADAS
+    tokens.update({'palabras reservadas' : tokens.get('palabras reservadas')+1})
     resto.pop(0)
     if metodo == 'new-db':
         checkSql(resto,0)
@@ -45,9 +46,11 @@ def funcion(metodo, resto):
 
 def checkSql(sql, id):
     arg = ''.join(sql)
+    tokens.update({'identificadores' : tokens.get('identificadores')+1})
     if arg.isalnum():
         if len(sql) > 0  and len(sql) < 2:
             outputMessageSuccess(id,arg)
+            tokens.clear()
         else: outputMessageError()
     else: outputMessageError()
 
