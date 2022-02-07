@@ -62,8 +62,8 @@ def checkSqlAdvanced(sql, id):
                 sql.pop(0),sql.pop(0)
                 verifyParentesis(sql,id)
             else: 
-                outputMessageError()
-                print('el pedo fue el upd')    
+                message.config(text='[ERROR] : Expected reserved word UPD')
+                  
         
     else: outputMessageError()
 
@@ -78,7 +78,8 @@ def verifyParentesis(sql,id):
                 prueba2.append(char)
             else: 
                 count += 1  
-        c = "".join(prueba2)       
+        c = "".join(prueba2)
+        prueba2.clear()       
         if count > 2:
             message.config(text='[ERROR] : Cannot have multiple parentheses')
         else: 
@@ -88,14 +89,30 @@ def verifyParentesis(sql,id):
                 if(id==5):
                     verifyContent(c)
                 elif(id==6):
-                    if c.count('=')-1 == c.count(','):
-                        co = c.split(',') 
-                        verifyContentFix(co)   
-                    else:outputMessageError()     
-                else:
-                    outputMessageError()      
-    else: 
-        outputMessageError()
+                    separado = c.split(',')
+                    if '>' in c:
+                        for elemento in separado:
+                            if not elemento.count('>') ==1:
+                                prueba2.append(elemento.replace(' ', ''))
+                            else: 
+                                prueba2.extend(elemento.replace(' ', '').split('>'))
+                        print(f' {prueba2}')
+                        if '=' in prueba2[-1]:
+                            verifyContentFix(prueba2)
+                            prueba2.clear()
+                        else: 
+                            print('eror')
+                            prueba2.clear()
+                            outputMessageError()
+                        
+                    else:
+                        print('Proceso normal')
+                        if c.count('=')-1 == c.count(','):
+                            co = c.split(',') 
+                            verifyContentFix(co)   
+                        else:outputMessageError()                       
+                else: 
+                    outputMessageError()
 
 
 def verifyContent(data):
@@ -150,7 +167,9 @@ def verifyContentFix(data): #PENDIENTE CHECAR LO DE ON Y DE MAS
                 break           
     if case:
         print(f'{new}ENTRO True')
+        message.config(text=f'[OK] : Fix-struct success')
         new.clear()
+    else: outputMessageError()
 
 
 def run():
