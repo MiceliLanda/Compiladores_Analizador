@@ -101,6 +101,7 @@ def verifyParentesis(sql,id):
         prueba2.clear()
         if count > 2:
             message.config(text='[ERROR] : Cannot have multiple parentheses')
+            tokensCount.config(text='')
         else:
             if(not c[-1].isalnum()):
                 message.config(text ='[ERROR] : Invalid Character')
@@ -117,7 +118,7 @@ def verifyParentesis(sql,id):
                             else:
                                 prueba2.extend(elemento.replace(' ', '').split('>'))
                                 tokens.update({'palabras reservadas': tokens.get('palabras reservadas')+1})
-                        # print(f' {prueba2}')
+                        # #print(f' {prueba2}')
                         if '=' in prueba2[-1]:
                             verifyContentFix(prueba2)
                             prueba2.clear()
@@ -147,7 +148,7 @@ def verifyContent(data):
     case = True
     for elemento in nomAndTipo:
         if elemento.isalnum():
-            print(elemento.isalnum(), elemento)
+            #print(elemento.isalnum(), elemento)
             atributos.append(elemento.strip())
         else:
             case = False
@@ -160,12 +161,12 @@ def verifyContent(data):
                     a = j[j.find(t)::]
                     if not len(a) != len(t):
                         new.append(a)
-                        print(f'tipo agregado: {a}')
+                        #print(f'tipo agregado: {a}')
                     else:
                         unknow = a
         tokens.update({'tipoDato': tokens.get('tipoDato')+len(new)})
         tokens.update({'identificadores': tokens.get('identificadores')+len(new)})
-        print(new)
+        #print(new)
         if len(atributos) != len(new):
             message.config(text =f'[ERROR] : Unknow Data Type {unknow}')
             new.clear()
@@ -173,11 +174,11 @@ def verifyContent(data):
         else:
             message.config(text='[OK] : Struct Created Successfully')
             showTokens()
-            tokensCount.config(text='')
+            #tokensCount.config(text='')
             new.clear()
             atributos.clear()
     else:
-        print('CASE ES FALSE')
+        #print('CASE ES FALSE')
         outputMessageError()
 
 def verifyContentFix(data):
