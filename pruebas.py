@@ -92,8 +92,13 @@
 # else:
 #     print('error syntax')
 metodo = 'new-db'
-token = {'new-db' : 1}
-value = token.get(metodo)
-print(value)
-token.update({'new-db' : value+1})
-print(token)
+token = {'new-db' : 1,'take-db' : 0,'supr-db' : 1,'supr-struct' : 3}
+
+token.update({'new-db' : token.get(metodo)+1})
+# print('\nantes de borrar' ,token,'\n')
+
+# for i,clave in enumerate(tokens):
+#     if tokens.get(clave) > 0:
+#         tokens[clave] = 0
+for i,v in enumerate(token):
+    print(f'{v} : {i}')
